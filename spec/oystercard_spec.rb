@@ -18,6 +18,12 @@ describe Oystercard do
     it "should add money to balance" do
       expect{subject.top_up(5)}.to change {subject.balance}.to 5
     end
+
+    it "should throw an error, if balance is exceed limit" do
+      limit = Oystercard::LIMIT
+      expect { subject.top_up(91) }.to raise_error "Exceed limit: #{limit}"
+    end
+
   end
 
 end
