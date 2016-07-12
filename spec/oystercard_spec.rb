@@ -21,7 +21,7 @@ describe Oystercard do
 
     it "should throw an error, if balance is exceed limit" do
       limit = Oystercard::LIMIT
-      expect { subject.top_up(91) }.to raise_error "Exceed limit: #{limit}"
+      expect { subject.top_up(91) }.to raise_error "Exceeds limit: #{limit}"
     end
 
   end
