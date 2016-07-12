@@ -7,8 +7,18 @@ def initialize
 end
 
 def top_up(money)
-  raise "Exceed limit: #{LIMIT}" if (@balance + money)> LIMIT
+  raise "Exceeds limit: #{LIMIT}" if check_limit(money)
   @balance += money
+end
+
+def deduct(money)
+  @balance -= money
+end
+
+private
+
+def check_limit(money)
+  (@balance + money)> LIMIT
 end
 
 end
