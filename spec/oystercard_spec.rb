@@ -16,9 +16,6 @@ describe Oystercard do
       expect{ subject.top_up(1) }.to raise_error("Exceeds max allowed amount of #{max_balance}")
     end
 
-    it 'should deduct amount from balance' do
-      expect{ subject.deduct(20) }.to change{ subject.balance }.by -20
-    end
   end
 
   context 'Touch functionality in/out' do
@@ -28,7 +25,8 @@ describe Oystercard do
     end
 
     it 'should set card to in journey when touched in' do
-      subject.touch_in
+      subject.top_up(10)
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
 
@@ -37,5 +35,28 @@ describe Oystercard do
       expect(subject).not_to be_in_journey
     end
   end
+
+    it "should raise error on touch_in if minimum balance is not available" do
+      expect{ subject.touch_in(station) }.to raise_error("insufficient funds")
+    end
+
+    it "should deduct minimum fare" do
+      expect{ subject.touch_out }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
+    end
+
+    let(:station){ double(:station) }
+    it "should remember the entry station while touching in" do
+      subject.top_up(10)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
+    end
+
+    it "resets entry station at touch_out" do
+      subject.top_up(10)
+      subject.touch_in(station)
+      subject.touch_out
+      expect(subject.entry_station).to eq nil
+
+    end
 
 end
