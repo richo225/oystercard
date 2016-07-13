@@ -1,5 +1,6 @@
 require 'oystercard'
 
+
 describe Oystercard do
 
 let(:entry_station) {double(:station)}
