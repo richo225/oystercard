@@ -33,7 +33,27 @@ describe Oystercard do
     end
   end
 
-  describe "#check_limit" do
+  describe "in_journey" do
+    it "responds to in_journey" do
+      expect(subject).to respond_to(:in_journey?)
+    end
+    it "new card does not start in journey" do
+      expect(subject.in_journey?).to eq false
+    end
+  end
 
+  describe "touch_in" do
+    it "changes in_journey to true" do
+      subject.touch_in
+      expect(subject.in_journey).to eq true
+    end
+  end
+
+  describe "touch_out" do
+    it "changes in_journey to false" do
+      subject.touch_in
+      subject.touch_out
+      expect(subject.in_journey).to eq false
+    end
   end
 end
