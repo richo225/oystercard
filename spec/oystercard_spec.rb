@@ -2,7 +2,8 @@ require 'oystercard'
 
 describe Oystercard do
 
-let(:station) {double(:station)}
+let(:entry_station) {double(:station)}
+let(:exit_station) {double(:station)}
 
   describe '#balance' do
     it 'should check that a new card has a balance' do
@@ -30,40 +31,63 @@ let(:station) {double(:station)}
   describe "#touch in " do
     before(:each) do
       subject.top_up(10)
-      subject.touch_in(station)
+      subject.touch_in(entry_station)
     end
     it "changes in_journey to true" do
-      expect(subject.in_journey).to eq true
+      expect(subject.in_journey?).to eq true
     end
 
     it "remembers entry station when touching in" do
-      expect(subject.entry_station).to eq station
+      expect(subject.entry_station).to eq entry_station
     end
   end
   describe "touch in error" do
     it "raises error when insufficient balance" do
-      expect{subject.touch_in(station)}.to raise_error("Insufficient balance")
+      expect{subject.touch_in(entry_station)}.to raise_error("Insufficient balance")
     end
   end
     describe "#touch out" do
       before (:each) do
         subject.top_up(10)
-        subject.touch_in(station)
+        subject.touch_in(entry_station)
       end
       it "turns in_journey to false when touching out" do
-        subject.touch_out
-        expect(subject.in_journey).to eq false
+        subject.touch_out(exit_station)
+        expect(subject.in_journey?).to eq false
       end
 
       it "reduces balance by minimum fare when touch_out" do
-        expect{subject.touch_out}.to change{subject.balance}.by( -Oystercard::MINIMUM_FARE)
+        expect{subject.touch_out(exit_station)}.to change{subject.balance}.by( -Oystercard::MINIMUM_FARE)
       end
 
       it "changes entry_station to nil" do
-        expect{subject.touch_out}.to change{subject.entry_station}.from(station).to(nil)
+        expect{subject.touch_out(exit_station)}.to change{subject.entry_station}.from(entry_station).to(nil)
+      end
+
+      it "remembers exit station when touching out" do
+        subject.touch_out(exit_station)
+        expect(subject.exit_station).to eq exit_station
       end
     end
 
+    describe "#initialize journeys" do
+      it "returns empty journey list" do
+        expect(subject.journeys).to be_empty
+      end
+    end
 
+    describe "#journeys" do
+      before (:each) do
+        subject.top_up(10)
+        subject.touch_in(entry_station)
+        subject.touch_out(exit_station)
+      end
 
+      it "creates a journey after touching_in and_out" do
+        expect(subject.journey).to include(:entry_station => entry_station, :exit_station => exit_station)
+      end
+      it "contains all journeys" do
+        expect(subject.journeys).to include(subject.journey)
+      end
+    end
 end
