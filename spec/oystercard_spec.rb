@@ -26,7 +26,7 @@ describe Oystercard do
 
     it 'should set card to in journey when touched in' do
       subject.top_up(10)
-      subject.touch_in
+      subject.touch_in(station)
       expect(subject).to be_in_journey
     end
 
@@ -37,11 +37,26 @@ describe Oystercard do
   end
 
     it "should raise error on touch_in if minimum balance is not available" do
-      expect{ subject.touch_in }.to raise_error("insufficient funds")
+      expect{ subject.touch_in(station) }.to raise_error("insufficient funds")
     end
 
     it "should deduct minimum fare" do
       expect{ subject.touch_out }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
+    end
+
+    let(:station){ double(:station) }
+    it "should remember the entry station while touching in" do
+      subject.top_up(10)
+      subject.touch_in(station)
+      expect(subject.entry_station).to eq station
+    end
+
+    it "resets entry station at touch_out" do
+      subject.top_up(10)
+      subject.touch_in(station)
+      subject.touch_out
+      expect(subject.entry_station).to eq nil
+
     end
 
 end
