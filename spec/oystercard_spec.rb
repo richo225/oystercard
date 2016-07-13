@@ -31,7 +31,7 @@ describe Oystercard do
     end
 
     it 'should set card to NOT be in journey when touched out' do
-      subject.touch_out
+      subject.touch_out(exit_station)
       expect(subject).not_to be_in_journey
     end
   end
@@ -41,7 +41,7 @@ describe Oystercard do
     end
 
     it "should deduct minimum fare" do
-      expect{ subject.touch_out }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
+      expect{ subject.touch_out(exit_station) }.to change{ subject.balance }.by (-Oystercard::MIN_FARE)
     end
 
     let(:station){ double(:station) }
@@ -51,12 +51,19 @@ describe Oystercard do
       expect(subject.entry_station).to eq station
     end
 
+    let(:exit_station){ double(:exit_station) }
     it "resets entry station at touch_out" do
       subject.top_up(10)
       subject.touch_in(station)
-      subject.touch_out
+      subject.touch_out(exit_station)
       expect(subject.entry_station).to eq nil
-
+    end
+    let(:touch_in_entry_station){ double(:touch_in_entry_station) }
+    it 'checks if the Oystercard stores a log for journeys' do
+      subject.top_up(10)
+      subject.touch_in(touch_in_entry_station)
+      subject.touch_out(exit_station)
+      expect(subject.journey.key(exit_station)).to eq :exit_station
     end
 
 end
