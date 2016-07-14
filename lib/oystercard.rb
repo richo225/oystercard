@@ -23,6 +23,7 @@ def in_journey?
 end
 
 def touch_in(station)
+  #penalty if @new_journey.exists? 
   fail "Insufficient balance" if @balance < MINIMUM_FARE
   @new_journey = Journey.new(station)
 end

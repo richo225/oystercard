@@ -1,4 +1,5 @@
 require "journey"
+
 describe Journey do
   let(:entry_station) {double(:station)}
   let(:exit_station) {double(:station)}
@@ -23,8 +24,10 @@ describe Journey do
       journey.finish(exit_station)
       expect(journey.fare).to eq 1
     end
-    it "returns penalty fare if no entry_station" do
-      
+    it "returns penalty fare if no exit_station" do
+      journey = Journey.new(entry_station)
+      expect(journey.fare).to eq 6
+
     end
   end
 end

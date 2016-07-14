@@ -12,7 +12,10 @@ class Journey
   end
 
   def fare
-  1
-  end  
-
+    if @current_journey[:exit_station] != nil
+      1
+    else
+      6
+    end
+  end
 end
