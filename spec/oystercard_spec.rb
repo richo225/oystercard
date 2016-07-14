@@ -34,9 +34,6 @@ let(:exit_station) {double(:station)}
       subject.top_up(10)
       subject.touch_in(entry_station)
     end
-    it "changes in_journey to true" do
-      expect(subject.in_journey?).to eq true
-    end
   end
 
   describe "touch in error" do
@@ -58,25 +55,20 @@ let(:exit_station) {double(:station)}
       it "reduces balance by minimum fare when touch_out" do
         expect{subject.touch_out(exit_station)}.to change{subject.balance}.by( -Oystercard::MINIMUM_FARE)
       end
-
-      it "changes journey to nil" do
-        subject.touch_out(exit_station)
-        expect(subject.journey).to eq nil
-      end
     end
 
     describe "#initialize journeys" do
       it "returns empty journey list" do
-        expect(subject.journeys).to be_empty
+        expect(subject.journey_history).to be_empty
       end
     end
 
-    describe "#journeys" do
+    describe "#journey_history" do
       it "contains a journey after touching_in and_out" do
         subject.top_up(10)
         subject.touch_in(entry_station)
         subject.touch_out(exit_station)
-        expect(subject.journeys).to include(:entry_station => entry_station, :exit_station => exit_station)
+        expect(subject.journey_history).to include(:entry_station => entry_station, :exit_station => exit_station)
       end
     end
 end
