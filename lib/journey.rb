@@ -2,14 +2,13 @@ require_relative "oystercard"
 
 class Journey
 
-attr_reader :entry_station, :exit_station, :journey
+attr_reader :entry_station, :exit_station
 
   PENALTY_FARE = 6
 
-  def initialize(entry_station = nil)
+  def initialize(entry_station: nil)
     @entry_station = entry_station
-    @complete = nil
-
+    @complete = false
   end
 
   def complete?
@@ -26,9 +25,9 @@ attr_reader :entry_station, :exit_station, :journey
   end
 
   def finish(exit_station)
-    @journey = Journey.new
     @exit_station = exit_station
     @complete = true
+    self
   end
 
 end
