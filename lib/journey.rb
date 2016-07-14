@@ -16,6 +16,7 @@ attr_reader :entry_station, :exit_station
     @complete
   end
 
+
   def fare
     if entry_station && exit_station != nil
       Oystercard::MIN_FARE

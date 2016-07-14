@@ -26,6 +26,7 @@ describe Journey do
      expect(subject.fare).to eq Journey::PENALTY_FARE
    end
 
+
    context 'given an exit station' do
       let(:other_station) { double :other_station }
 
