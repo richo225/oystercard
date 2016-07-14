@@ -28,16 +28,15 @@ describe Journey do
       journey.finish(exit_station)
       expect(journey.fare).to eq 1
     end
-<<<<<<< HEAD
+
     it "returns penalty fare if no exit_station" do
       journey = Journey.new(entry_station)
       expect(journey.fare).to eq 6
 
-=======
+
     it "returns penalty fare if no entry_station" do
       journey = Journey.new
       expect(journey.fare).to eq 6
->>>>>>> b410f1b4dcd59f6666134f2eee3a8327a201e3a8
     end
   end
 end

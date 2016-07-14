@@ -19,11 +19,9 @@ def top_up(money)
 end
 
 def touch_in(station)
-<<<<<<< HEAD
-  #penalty if @new_journey.exists? 
   fail "Insufficient balance" if @balance < MINIMUM_FARE
   @new_journey = Journey.new(station)
-=======
+
   if (@new_journey.current_journey == {}) or (@new_journey.complete?)
     fail "Insufficient balance" if @balance < MINIMUM_FARE
     @new_journey = Journey.new
@@ -34,7 +32,6 @@ def touch_in(station)
     @new_journey = Journey.new
     @new_journey.entrance(station)
   end
->>>>>>> b410f1b4dcd59f6666134f2eee3a8327a201e3a8
 end
 
 def touch_out(station)
