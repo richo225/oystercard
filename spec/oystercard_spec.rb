@@ -37,16 +37,14 @@ let(:exit_station) {double(:station)}
     it "changes in_journey to true" do
       expect(subject.in_journey?).to eq true
     end
-
-    it "remembers entry station when touching in" do
-      expect(subject.entry_station).to eq entry_station
-    end
   end
+
   describe "touch in error" do
     it "raises error when insufficient balance" do
       expect{subject.touch_in(entry_station)}.to raise_error("Insufficient balance")
     end
   end
+
     describe "#touch out" do
       before (:each) do
         subject.top_up(10)
@@ -61,13 +59,9 @@ let(:exit_station) {double(:station)}
         expect{subject.touch_out(exit_station)}.to change{subject.balance}.by( -Oystercard::MINIMUM_FARE)
       end
 
-      it "changes entry_station to nil" do
-        expect{subject.touch_out(exit_station)}.to change{subject.entry_station}.from(entry_station).to(nil)
-      end
-
-      it "remembers exit station when touching out" do
+      it "changes journey to nil" do
         subject.touch_out(exit_station)
-        expect(subject.exit_station).to eq exit_station
+        expect(subject.journey).to eq nil
       end
     end
 
@@ -78,17 +72,11 @@ let(:exit_station) {double(:station)}
     end
 
     describe "#journeys" do
-      before (:each) do
+      it "contains a journey after touching_in and_out" do
         subject.top_up(10)
         subject.touch_in(entry_station)
         subject.touch_out(exit_station)
-      end
-
-      it "creates a journey after touching_in and_out" do
-        expect(subject.journey).to include(:entry_station => entry_station, :exit_station => exit_station)
-      end
-      it "contains all journeys" do
-        expect(subject.journeys).to include(subject.journey)
+        expect(subject.journeys).to include(:entry_station => entry_station, :exit_station => exit_station)
       end
     end
 end
