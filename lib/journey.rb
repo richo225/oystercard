@@ -2,17 +2,36 @@ class Journey
 
   attr_reader :current_journey
 
-  def initialize(entry_station)
+  def initialize
     @current_journey = {}
-    @current_journey[:entry_station] = entry_station
+  end
+
+  def entrance(station)
+    @current_journey[:entry_station] = station
   end
 
   def finish(exit_station)
     @current_journey[:exit_station] = exit_station
   end
 
-  def fare
-  1
-  end  
+  def complete?
+    @current_journey[:entry_station] && @current_journey[:exit_station]
+  end
+
+  def touch_in_fare
+    if complete?
+      1
+    else
+      6
+    end
+  end
+
+  def touch_out_fare
+    if complete?
+      6
+    else
+      1
+    end
+  end
 
 end

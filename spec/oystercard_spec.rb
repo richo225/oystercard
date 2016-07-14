@@ -47,21 +47,6 @@ let(:exit_station) {double(:station)}
         subject.top_up(10)
         subject.touch_in(entry_station)
       end
-      it "turns in_journey to false when touching out" do
-        subject.touch_out(exit_station)
-        expect(subject.in_journey?).to eq false
-      end
-
-      it "reduces balance by minimum fare when touch_out" do
-        expect{subject.touch_out(exit_station)}.to change{subject.balance}.by( -Oystercard::MINIMUM_FARE)
-      end
-    end
-
-    describe "#initialize journeys" do
-      it "returns empty journey list" do
-        expect(subject.journey_history).to be_empty
-      end
-    end
 
     describe "#journey_history" do
       it "contains a journey after touching_in and_out" do
@@ -71,4 +56,5 @@ let(:exit_station) {double(:station)}
         expect(subject.journey_history).to include(:entry_station => entry_station, :exit_station => exit_station)
       end
     end
+end
 end
