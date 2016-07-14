@@ -2,25 +2,33 @@ require_relative "oystercard"
 
 class Journey
 
-  BALANCE_LIMIT = 90
-  MIN_BALANCE = 1
-  MIN_FARE = 1
+attr_reader :entry_station, :exit_station, :journey
 
-  # attr_reader :balance
-  attr_reader :entry_station, :journey
+  PENALTY_FARE = 6
 
-
-  def initialize
-    # @balance = 0
-    @journey = {}
-  end
-
-  def touch_in(entry_station)
-    # raise "insufficient funds" if balance < MIN_BALANCE
-    fail if insufficient_funds
+  def initialize(entry_station = nil)
     @entry_station = entry_station
-    journey[:entry_station] = entry_station
+    @complete = nil
+
   end
 
+  def complete?
+    @complete
+  end
+
+
+  def fare
+    if entry_station && exit_station != nil
+      Oystercard::MIN_FARE
+    else
+      PENALTY_FARE
+    end
+  end
+
+  def finish(exit_station)
+    @journey = Journey.new
+    @exit_station = exit_station
+    @complete = true
+  end
 
 end

@@ -17,10 +17,10 @@ class Oystercard
     @balance += amount
   end
 
-  def insufficient_funds#(entry_station)
+  def touch_in(entry_station)
     raise "insufficient funds" if balance < MIN_BALANCE
-    # @entry_station = entry_station
-    # journey[:entry_station] = entry_station
+     @entry_station = entry_station
+     journey[:entry_station] = entry_station
   end
 
   def touch_out(exit_station)
