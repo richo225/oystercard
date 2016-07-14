@@ -9,8 +9,6 @@ class Journey
   # attr_reader :balance
   attr_reader :entry_station, :journey
 
-  card = Oystercard.new
-
 
   def initialize
     # @balance = 0
@@ -19,17 +17,10 @@ class Journey
 
   def touch_in(entry_station)
     # raise "insufficient funds" if balance < MIN_BALANCE
-    fail if card.insufficient_funds
+    fail if insufficient_funds
     @entry_station = entry_station
     journey[:entry_station] = entry_station
   end
-
-
-
-
-
-
-
 
 
 end
